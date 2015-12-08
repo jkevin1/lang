@@ -1,0 +1,30 @@
+/*
+ *  This is a example translation of the default example on rust-lang.org that shows basic language features
+ *  as well as comments on some design decisions that have not yet been made (prefixed with //?)
+ */
+
+i32 main(String[] args) {
+  // A simple integer calculator
+  // `+` or `-` means add or subtract by 1
+  // `*` or `/` means multiply or divide by 2
+
+  //? Should everything it be constant or mutable by default?
+  const String program = "+ + * - /";
+  i32 accumulator = 0;
+
+  //? Should char be inferred or automatically determined with other means
+  for (char c : program) {
+    //? Should parenthesis be around arguments for build-in flow control (if/for/switch/etc)
+    switch (c) {
+      case '+': accumulator += 1;
+      case '-': accumulator -= 1;
+      case '*': accumulator *= 2;
+      case '/': accumulator /= 2;
+    }
+  }
+
+  //? how should stdout be referenced.  Could println implicitly use stdout unless otherwise specified?
+  println("The program \"" + program + "\" calculates the value " + accumulator);
+
+  // implicitly return 0 if no error
+}
