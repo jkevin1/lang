@@ -1,0 +1,16 @@
+// Module is inferred from filename maybe?
+// it could be explicit: module MyModule {...}
+
+// Pass immutable args as well?
+void init() {
+ // Initialize module resources here
+ // just like a singleton with RAII but not terrible
+}
+
+void close() {
+  // Free module resources here
+}
+
+public f32 myFunction(f32 x) {
+  return (x-3f) * 5f;  // f shorthand for f32 casting
+}

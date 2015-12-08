@@ -1,0 +1,67 @@
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+PRIMITIVES
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Primitives will be generally in the style of rust, I find that the bit size of numbers makes them more clear, and a single letter (i, u, or f) is sufficient to convey the format of the data.
+Imo a lot better than the full word "unsigned"
+    byte:   i8 u8
+    short:  i16 u16
+    int:    i32 u32
+    long:   i64 u64
+    float:  f32
+    double: f64
+    char:   char (equivalent to u8, but conveys meaning properly, would require casting to safely be used in arithmetic)
+    string: String (implemented as a full class, not null terminated, length is stored as either a u32 or u64 depending on bitness)
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+DATA STRUCTURES
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Structs and classes will both be allowed, similar to C++, but there is actually a difference between them other than default visibility:
+  Structs: simple POD structures, functions are statically dispatched, with a reference to the struct passed through, simple inheritance allowed (no overriding functions, etc)  Only static reflection
+  Classes: builds upon structs: full OOP classes, like structs but allow for dynamic dispatch, vtables and possibly dynamic reflection, possibly extending a base class as well. opt-in overhead
+I have opted to elminate the requirment for a semicolon after structs/classes, it is often forgotten and doesnt seem to have a clear reason to exist, adding a semicolon should still be allowed though but not required
+
+// Struct person has 2 members and no other data
+struct Person {
+  i32 age;
+  String name;
+}
+
+// Person extends a default object (this could be implicit)
+class Person : Object {
+  i32 age;
+  String name;
+}
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CLASS IMPLEMENTATION
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Constructors:
+  Much different from c++, I guess im taking cues from java on this.  const members can be initialized anywhere in the constructor, removing the need for initializer lists
+
+Extension:
+  Similar to D/Rust, functions can (maybe have to be) defined out of the class/struct definition.  They can use variables that are visible in the current scope (external
+  things will only use public members, within the module private can be used)
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+LANGUAGE FEATURES
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Modules:
+  Modules will be supported, much more elegant solution than headers.  Faster compile time, better encapuslation, simpler syntax, easy incorporation of external libraries (see cargo)
+  Private/public will be used to specify whether things are visible outside of the module, maybe something like friend to allow specific modules to use private data
+  Modules will also have automatic initialization/termination. Just like "main" is reserved as the starting point, "<Module>.init" and "<Module>.close" or something similar can be defined
+  to load and free resources needed by the module.  The order they are called is based on the order of the imports listed (usually doesn't matter) and modules can recursively initialize
+  other modules that they use themselves.  Modules will only be initialized once, resolved at compile time (if possible) and terminated in inverse order.
+
+No preprocessor: (?)
+  Although there is definitely a use for it, it would be difficult to incorporate into modules and would make parsing more difficult
+  I may still consider some sort of macro capability...
+
+Operator overloading
+  10/10 feature, why dont more languages have it
+
+Templates/Generics.  Difficult problem, with classes with dynamic reflection type erasure could be used,
+

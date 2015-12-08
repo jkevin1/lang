@@ -1,0 +1,12 @@
+import MyModule.*; // this syntax allows all members of the module to be used directly, rather than MyModule.<member>
+import Math; // a built in module
+
+i32 main(String[] args) { // Returns error code, arrays store size and are guarenteed to be contiguous, but strings contain pointers anyway so they arent as contiguous
+  if (Sys.platform == Sys.platform.WIN32) // This should be interpreted as constexpr, and be elided on other platforms, making that class of #ifdefs unnecessary
+    Sys.out.println("Using windows 32 platform");
+  
+  Sys.out.println(args[0]); // Semantics unknown, but println will probably be there, how stdout is referenced is TBD
+  f32 sqrt = Math.sqrt(5); // has to be explicitly called as a member of Math, if .* was used in the import sqrt could be called directly
+  f32 output = myFunction(sqrt); // see MyModule.lang
+  Sys.out.println("Output: " + output);
+}
