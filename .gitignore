@@ -1,0 +1,5 @@
+.tab.c
+*.tab.c
+*.tab.*
+*.yy.c
+parse
