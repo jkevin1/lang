@@ -6,3 +6,6 @@ lang.tab.c lang.tab.h: lang.y
 
 lex.yy.c: lang.l lang.tab.h
 	flex lang.l
+
+clean:
+	rm parse lang.tab.c lang.tab.h lex.yy.c

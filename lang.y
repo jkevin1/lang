@@ -5,6 +5,7 @@
 extern "C" int yylex();
 extern "C" int yyparse();
 extern "C" FILE* yyin;
+extern "C" int line_num;
 
 void cleanup();
 void yyerror(const char* s);
@@ -22,12 +23,12 @@ void yyerror(const char* s);
 
 %%
 lang:
-    lang INT      { printf("Found an int literal: %d\n", $2); }
-    | lang FLOAT  { printf("Found a float literal: %f\n", $2); }
-    | lang STRING { printf("Found a string literal: %s\n", $2); }
-    | INT         { printf("Found an int literal: %d\n", $1); }
-    | FLOAT       { printf("Found a float literal: %f\n", $1); }
-    | STRING      { printf("Found a string literal: %s\n", $1); }
+    lang INT      { printf("Found an int literal on line %d: %d\n", line_num, $2); }
+    | lang FLOAT  { printf("Found a float literal on line %d: %f\n", line_num, $2); }
+    | lang STRING { printf("Found a string literal on line %d: %s\n", line_num, $2); }
+    | INT         { printf("Found an int literal on line %d: %d\n", line_num, $1); }
+    | FLOAT       { printf("Found a float literal on line %d: %f\n", line_num, $1); }
+    | STRING      { printf("Found a string literal on line %d: %s\n", line_num, $1); }
 %%
 
 int main(int argc, char* argv[]) {
@@ -46,7 +47,7 @@ int main(int argc, char* argv[]) {
 }
 
 void yyerror(const char* s) {
-  fprintf(stderr, "Parse error: %s\n", s);
+  fprintf(stderr, "Parse error on line %d: %s\n", line_num, s);
   exit(-1);
 }
 
